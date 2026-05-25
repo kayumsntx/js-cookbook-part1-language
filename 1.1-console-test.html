@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    console.log('this apperas in the developer console');
+  </script>
+
+  <script>
+    const testValue = 40 + 12;
+    console.log(testValue);
+
+  </script>
+
+  <script>
+    'use strict'
+    function addRange(start, end) {
+      let sum = 0;
+      for (let i = start; i < end + 1; i++) {
+        sum += i;
+      }
+      return sum;
+    }
+    let s = 10;
+    let e = 15;
+    console.log(addRange(s, e))
+    s = 1;
+    e = 5;
+
+    console.log(addRange(s, e))
+  </script>
+
+  <script>
+    if(window.location.protocol==="file")
+    {
+      console.log('running as local file');
+    }
+    else if (window.location.host.startsWith('localhost'))
+    {
+      console.log('running on local server');
+    }
+    else
+    {
+      console.log('Running on remote web server');
+    }
+  </script>
+</body>
+
+</html>
