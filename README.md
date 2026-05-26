@@ -25,7 +25,7 @@ All recipes from **Part I (The JavaScript Language)** of the JavaScript Cookbook
 | 9 | Asynchronous Programming | Promises, Async/Await, Web Workers | 8 |
 | 10 | Errors & Testing | Try/Catch, Unit Tests, Coverage | 8 |
 
-**Total:** 111 recipes
+**Total:**  recipes
 
 ---
 
