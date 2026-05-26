@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+//1 = 2.1 - String Validation (Checking non-empty string)
+
+    function validateString(input) {
+      if (input && input.trim().length > 0) {
+        console.log(`valid input: "${input}"`)
+      }
+      else {
+        console.log('Input is missing, empty or just whitespace');
+      }
+    }
+    validateString(null);
+    validateString("  ");
+    validateString('JavaScript');
+
+//2 = 2.2 - Number to Formatted String (toFixed, toPrecision)
+
+     const price = 12500.5088654;
+    {
+      console.log(price.toFixed(2));
+      const pi = 3.14159;
+      console.log(pi.toPrecision(3));
+    }
+
+
+ //3 = 2.2 - Currency Formatting (Intl.NumberFormat) 
+    const salary = 750000;
+    const usCurr = new Intl.NumberFormat('en-US', { style: "currency", currency: 'USD' })
+
+    const bnCurr = new Intl.NumberFormat('en-BD', { style: "currency", currency: 'BDT' })
+    console.log(usCurr.format(salary));
+    console.log(bnCurr.format(salary));
+
+
+//4 = 2.2 - Percentage Formatting
+    const successRate = 0.8765;
+    const percentFormat = new Intl.NumberFormat('en-US', { style: "percent", minimumFractionDigits: 1, });
+    console.log(percentFormat.format(successRate));
+
+
+//5 = 2.3 - Escape Characters (Single Quote)
+    const favoriteMovie = 'My favorite movie is \'The Seventh Seal\'';
+    console.log(favoriteMovie);
+
+//6 = 2.3 - Unicode Escape Sequence (Copyright Symbol)
+    const coptrightNotice = "This page \u00A9 Shelley Powers";
+    console.log(coptrightNotice);
+
+
+//7 = 2.3 - Quotes Inside Strings
+    const msg = `The student said, "I'm learning JavaScript today"`;
+    console.log(msg);
+
+
+//8 = 2.3 - SQL Query String
+    const sql = `Select * FROM Users Where Role='Admin'`;
+
+//9 = 2.5 - String Concatenation (Old Way vs Template Literals)
+    const qoute = "he shouted, \"keep the code clean\"";
+    const duration = 12;
+    const topic = "JavaScript";
+    const oldWay = "The upcomming class for " + duration + "covers" + topic;
+    console.log(oldWay);
+    const newWay = `The upcomming class for "${duration}" covers ${topic}"`;
+    console.log(newWay);
+
+//10 = 2.6 - Case-Insensitive String Comparison
+    function compareUserName(input1, input2) {
+      if (input1.toLowerCase() === input2.toLowerCase()) {
+        console.log("Match found! (Case-insensitive)")
+      }
+
+      else {
+        console.log("strings do not match");
+      }
+
+
+    }
+    const firstUser = "Kayum";
+    const secondUser = "KAYUM";
+    compareUserName(firstUser, secondUser);
+
+//11 = 2.7 - Check if String Contains Substring (includes)
+    const detailsString = "JavScript is a scripting Language for building scalable web app";
+    const hasscripting = detailsString.includes('scriptings');
+    console.log(hasscripting);
+
+//12 = 2.8 - Replace All Occurrences (replace with regex /g)
+    const text = "The cat sat on the mat. What a smart cat"
+    console.log(text);
+    const replace = text.replace(/cat/g, "dog");
+    console.log(replace);
+
+//13 = 2.10 - Replace Digits with Regex (\d+)
+    const rawInput = "Call me at (555) 123-4567 or 555.987.6543";
+
+    const digitPattern = /\d+/g
+    const newText = rawInput.replace(digitPattern, "[x]")
+    console.log(newText);
+
+    const oldstring = "Now is the time, this is the tame";
+    console.log(oldstring);
+
+    const pattern = /t\w{2}e/g;
+
+    const newString = oldstring.replaceAll(pattern, "place");
+    console.log(newString);
+
+//14 = 2.10 - Replace Pattern with Regex (t{w2}e)
+    const frameworks = "Angular, React, Vue,Next.js,Csharp,Entity";
+    const frameworkList = frameworks.split(",").map(item => item.trim());
+    console.log(frameworkList);
+
+//15 = 2.11 - Extract List from String (split + map + trim)
+    const logData = "Error: Code 401 at 10 am, Error: Code 404 at 11 am, Success Code 200 at 12 pm,Server Error: Code 500 at 10 pm";
+    const errorPat = /Error: Code (\d+)/g;
+    const totalError = [...logData.matchAll(errorPat)];
+    console.log(totalError);
+
+
+//17 = 2.13 - Remove Whitespace (trim)
+    const messyInput = "  hello@domain.com  ";
+    console.log(`"${messyInput}"`);
+    const cleanInput = messyInput.trim();
+    console.log(`"${cleanInput}"`);
+
+
+//18 = 2.14 - Capitalize First Letter
+    function capitalizeFirstLetter(text) {
+      if (!text) return "";
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+    console.log(capitalizeFirstLetter("kayum"))
+
+//19 = 2.15 - Email Validation with Regex
+    function isValidEmail(email) {
+      const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      return emailReg.test(email);
+    }
+    console.log(isValidEmail("@domian.com"));
+    console.log(isValidEmail("invalid-email@com"));
+    console.log(isValidEmail("kayum@gmail.com"));
+
+
+  </script>
+</body>
+
+</html>
