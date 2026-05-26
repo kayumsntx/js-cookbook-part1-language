@@ -15,7 +15,7 @@ All recipes from **Part I (The JavaScript Language)** of the JavaScript Cookbook
 | # | Chapter | Topic | Recipes |
 |---|---------|-------|---------|
 | 1 | Development Environment | VS Code, npm, ESLint, Test Server | 12 |
-| 2 | Strings & Regular Expressions | Template literals, Regex, Validation | 15 |
+| 2 | Strings & Regular Expressions | Template literals, Regex, Validation | 19 |
 | 3 | Numbers | Random, Rounding, BigInt, Crypto | 9 |
 | 4 | Dates | Current date, Formatting, Calculations | 6 |
 | 5 | Arrays | Map, Filter, Reduce, Destructuring | 21 |
