@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+ <script>
+
+    // Checking If an Object Is an Array
+const fruits = ["Apple", "Banana", "Orange"];
+const user = { name: "Rahman", role: "Developer" };
+
+// The Trap: typeof cannot distinguish between objects and arrays
+console.log(typeof fruits); // Output: "object"
+console.log(typeof user);   // Output: "object"
+
+// The Solution: Array.isArray()
+console.log(Array.isArray(fruits)); // Output: true
+console.log(Array.isArray(user));
+
+// Iterating Over All the Elements in an Array
+const colors = ["Red", "Green", "Blue"];
+
+// Approach A: The elegant 'for...of' loop
+for (const color of colors) {
+  console.log(`Color: ${color}`);
+}
+
+// Approach B: Array.prototype.forEach()
+colors.forEach((color, index) => {
+  console.log(`Item at index ${index} is ${color}`);
+});
+
+// Approach C: Array.prototype.map()
+const upperColors = colors.map(color => color.toUpperCase());
+console.log(upperColors);
+
+// Checking If Two Arrays Are Equal
+const array1 = [1, 2, 3];
+const array2 = [1, 2, 3];
+const array3 = [1, 2, 4];
+
+// Reference check trap:
+console.log(array1 === array2);
+
+// The Solution: A structural helper function
+function areArraysEqual(arr1, arr2) {
+  if (arr1.length !== arr2.length) return false;
+  return arr1.every((value, index) => value === arr2[index]);
+}
+console.log(areArraysEqual(array1, array2)); // true
+console.log(areArraysEqual(array1, array3)); // false
+
+// Breaking Down an Array into Separate Variables
+const userProfile = ["Rahman", "Software Engineer", "Dhaka"];
+const [name, designation, city] = userProfile;
+console.log(name);
+console.log(designation);
+
+// Skipping elements
+const [developerName, , userLocation] = userProfile;
+console.log(userLocation);
+
+
+// Passing an Array to a Function That Expects a List of Values
+const structuralScores = [78, 92, 85, 99, 64];
+console.log(Math.max(...structuralScores)); // 99
+
+function registerStudent(firstName, lastName, batchId) {
+  return `Enrolled: ${firstName} ${lastName} into Batch ${batchId}`;
+}
+const studentData = ["Anik", "Sarker", "Batch-41"];
+console.log(registerStudent(...studentData));
+
+// Cloning an Array
+const originalLanguages = ["C#", "SQL Server", "JavaScript"];
+const wrongClone = originalLanguages;
+wrongClone.push("Python");
+console.log(originalLanguages);
+
+const safeLanguages = [...originalLanguages];
+safeLanguages.push("TypeScript");
+console.log(originalLanguages);
+console.log(safeLanguages);
+
+// Merging Two Arrays
+const backendStack = ["C#", "ASP.NET Core"];
+const frontendStack = ["Angular", "Bootstrap"];
+const fullStack = [...backendStack, ...frontendStack];
+console.log(fullStack);
+
+const extendedStack = ["SQL Server", ...backendStack, "Web API", ...frontendStack];
+console.log(extendedStack);
+
+// Copying a Portion of an Array
+const frameworkStack = ["Angular", "React", "Vue", "Svelte", "Next.js"];
+const subStack = frameworkStack.slice(1, 4);
+console.log(subStack);
+console.log(frameworkStack);
+
+// Extracting Array Items That Meet Specific Criteria
+const examScores = [45, 82, 59, 91, 74, 30];
+const passingScores = examScores.filter(score => score >= 60);
+console.log(passingScores);
+
+// Emptying an Array
+let listA = ["C#", "SQL", "JavaScript"];
+let referenceToListA = listA;
+listA.length = 0;
+console.log(listA);
+console.log(referenceToListA);
+
+let listB = ["C#", "SQL", "JavaScript"];
+let referenceToListB = listB;
+listB = [];
+console.log(listB);
+console.log(referenceToListB);
+
+// Removing Duplicate Values
+const studentAttendance = ["Rahman", "Anik", "Rahman", "Sarker", "Anik"];
+const uniqueStudents = [...new Set(studentAttendance)];
+console.log(uniqueStudents);
+
+// Flattening a Two-Dimensional Array
+const batchModules = [
+  ["C# OOP", "SQL Server"],
+  ["ASP.NET MVC", "Web API"],
+  ["Angular Framework", "Bootstrap UI"]
+];
+const flatCurriculum = batchModules.flat();
+console.log(flatCurriculum);
+
+// Searching Through an Array
+const frameworkStack1 = ["Angular", "React", "Vue", "Svelte"];
+console.log(frameworkStack1.includes("React"));
+console.log(frameworkStack1.indexOf("Vue"));
+console.log(frameworkStack1.indexOf("C#"));
+
+// Searching Through an Array for Criteria
+const students = [
+  { id: 101, name: "Anik", score: 85 },
+  { id: 102, name: "Rahman", score: 92 },
+  { id: 103, name: "Sarker", score: 64 }
+];
+const topStudent = students.find(student => student.score > 90);
+console.log(topStudent);
+const targetIndex = students.findIndex(student => student.id === 103);
+console.log(targetIndex);
+
+// Removing or Replacing Array Elements
+const structuralLanguages = ["C#", "Java", "Python", "PHP"];
+const updatedLanguages = structuralLanguages.toSpliced(2, 1, "JavaScript", "TypeScript");
+console.log(updatedLanguages);
+console.log(structuralLanguages);
+
+// Sorting an Array of Objects
+const products = [
+  { name: "Laptop", price: 1200 },
+  { name: "Mouse", price: 25 },
+  { name: "Monitor", price: 300 }
+];
+const sortedByPrice = products.toSorted((a, b) => a.price - b.price);
+console.log(sortedByPrice);
+
+// Formatting Scores
+const rawScores = [40, 55, 48];
+const formattedScores = rawScores.map(score => `${((score / 60) * 100).toFixed(1)}%`);
+console.log(formattedScores);
+
+// Combining Array Values
+const orderItems = [
+  { description: "Domain Registration", price: 12 },
+  { description: "Cloud Hosting", price: 45 },
+  { description: "SSL Certificate", price: 15 }
+];
+const grandTotal = orderItems.reduce((acc, item) => acc + item.price, 0);
+console.log(`Grand Total: $${grandTotal}`);
+
+// Validating Array Contents
+const clientAges = [24, 31, 19, 42, 17, 29];
+console.log(clientAges.every(age => age >= 18));
+console.log(clientAges.some(age => age < 18));
+
+// Creating a Set
+const activeUserIds = new Set();
+activeUserIds.add(1001);
+activeUserIds.add(1002);
+activeUserIds.add(1001);
+console.log(activeUserIds.size);
+console.log(activeUserIds.has(1002));
+activeUserIds.delete(1002);
+
+// Creating a Map
+const configurationMap = new Map();
+const userRoleKey = { role: "Admin" };
+configurationMap.set("apiEndpoint", "https://api.system.local/v1");
+configurationMap.set(userRoleKey, ["Read", "Write", "Delete"]);
+console.log(configurationMap.get("apiEndpoint"));
+console.log(configurationMap.get(userRoleKey));
+console.log(configurationMap.has("apiEndpoint"));
+console.log(configurationMap.size);
+ </script>
+</body>
+</html>
