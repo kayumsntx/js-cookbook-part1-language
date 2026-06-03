@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+
+// 3.1 Generating Random Numbers
+function getRandomInteger(min, max) {
+return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+console.log(getRandomInteger(1, 10));
+console.log(getRandomInteger(1, 100));
+
+// 3.2 Generating Cryptographically Secure Random Numbers
+function generateSecureToken(length = 4) {
+const array = new Uint32Array(length);
+crypto.getRandomValues(array);
+return Array.from(array, num => num.toString(16)).join('');
+}
+console.log(generateSecureToken());
+
+// 3.3 Rounding to a Specific Decimal Place
+const pi = 3.1415926535;
+const displayValue = pi.toFixed(2);
+console.log(displayValue);
+const numericValue = Number(pi.toFixed(4));
+console.log(numericValue);
+
+// 3.4 Preserving Accuracy in Decimal Values
+console.log(0.1 + 0.2); 
+const price1 = 0.10;
+const price2 = 0.20;
+const totalInCents = (price1 * 100) + (price2 * 100);
+const finalPrice = totalInCents / 100;
+console.log(finalPrice);
+
+// 3.5 Converting a String to a Number
+const stringInt="42";
+const stringFloat="3.14abc";
+console.log(parseInt(stringInt,10));
+console.log(parseInt(stringFloat,10));
+console.log(parseFloat(stringFloat)); //output: 3.14
+console.log(+"42"); //output: 42
+console.log(+"3.14abc"); //output: NaN
+
+
+// 3.6 Converting a Decimal to a Hexadecimal Value
+const decimalValue = 255;
+const hexValue = decimalValue.toString(16).toUpperCase();
+
+console.log(hexValue);
+const parsedDecimal = parseInt(hexValue, 16);
+console.log(parsedDecimal);
+
+// 3.7 Converting Between Degrees and Radians
+const degreesToRadians = deg => deg * (Math.PI / 180);
+const radiansToDegrees = rad => rad * (180 / Math.PI);
+console.log(degreesToRadians(180)); // Output: 3.141592653589793 (π radians)
+console.log(radiansToDegrees(Math.PI / 2));
+
+// 3.8 Calculating the Length of a Circular Arc
+function getArcLength(radius, angleInDegrees) {
+const angleInRadians = angleInDegrees * (Math.PI / 180);
+return radius * angleInRadians;
+}
+const length = getArcLength(10, 90);
+console.log(Number(length.toFixed(2)));
+
+// 3.9 Manipulating Very Large Numbers with BigInt
+
+// Number
+const maxSafe = Number.MAX_SAFE_INTEGER;
+console.log("Number MAX_SAFE_INTEGER:", maxSafe);
+console.log("Number test:", maxSafe + 1 === maxSafe + 2);
+
+// BigInt
+const bigInt1 = 9007199254740991n;
+const bigInt2 = 9007199254740992n;
+const result = bigInt1 + bigInt2;
+console.log("BigInt result:", result.toString());
+
+</script> 
+</body>
+</html>
