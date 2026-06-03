@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <script>
+    // Getting the Current Date and Time
+const now = new Date();
+console.log(now.toString());
+console.log(now.toISOString());
+
+// Converting a String to a Date
+const isoDate = new Date("2026-05-23T14:30:00");
+console.log(isoDate.getFullYear()); // Output: 2026
+
+const customString = "05/23/2026"; // MM/DD/YYYY
+const [month, day, year] = customString.split("/").map(Number);
+const safeDate = new Date(year, month - 1, day);
+console.log(safeDate.toDateString());
+
+// Adding Days to a Date
+const projectStart = new Date("2026-05-23");
+const daysToAdd = 10;
+const projectDeadline = new Date(projectStart);
+projectDeadline.setDate(projectDeadline.getDate() + daysToAdd);
+
+console.log(projectStart.toISOString().split('T')[0]);
+console.log(projectDeadline.toISOString().split('T')[0]);
+
+// Comparing Dates and Testing Dates for Equality
+const dateA = new Date("2026-05-23");
+const dateB = new Date("2026-05-24");
+const dateCCopy = new Date("2026-05-23");
+
+console.log(dateA < dateB); // Output: true
+
+// 2. Testing for Equality (The Wrong Way)
+console.log(dateA === dateCCopy); // false
+
+// 3. Testing for Equality (The Correct Way)
+console.log(dateA.getTime() === dateCCopy.getTime()); // true
+
+// Calculating the Time Elapsed Between Two Dates
+const start = new Date("2026-05-01T09:00:00");
+const end = new Date("2026-05-23T17:30:00");
+const differenceInMs = end - start;
+
+// Time conversions
+const msInDay = 1000 * 60 * 60 * 24;
+const daysElapsed = Math.floor(differenceInMs / msInDay);
+console.log(`Total duration: ${daysElapsed} days.`);
+
+// Formatting a Date Value as a String
+const eventDate = new Date("2026-05-23T15:00:00");
+
+// American English formatting style (Month/Day/Year)
+const formatterUS = new Intl.DateTimeFormat('en-US', { dateStyle: 'long' });
+console.log(formatterUS.format(eventDate)); // Output: "May 23, 2026"
+
+// British English formatting style (Day/Month/Year)
+const formatterUK = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'medium',
+  timeStyle: 'short'
+});
+console.log(formatterUK.format(eventDate));
+
+// Custom specific layouts using options objects
+const specializedFormat = new Intl.DateTimeFormat('en-US', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
+console.log(specializedFormat.format(eventDate));
+
+   </script> 
+</body>
+</html>
