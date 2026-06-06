@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btnTest">Click here....</button>
+    <script>
+
+        //Passing a Function as an Argument
+document.getElementById('btnTest').addEventListener('click', buttonClicked, false);
+function buttonClicked() {
+  setTimeout(showMessage, 2000);
+}
+function showMessage() {
+  alert('You clicked the button 2 seconds ago');
+}
+
+//Using Arrow Functions
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const squares = numbers.map(number => number ** 2);
+console.log(squares);
+
+//Creating a Function That Accepts Unlimited Arguments
+function sumRecords(...numbers) {
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum += Math.round(numbers[i]);
+  }
+  return sum;
+}
+console.log(sumRecords(2, 5, 7, 8, 4, 66, 7, 1));
+
+//Creating a Function That Stores its State with a Closure
+function greetMaker(greeting) {
+  function addName(name) {
+    return `${greeting} ${name}`;
+  }
+  return addName;
+}
+const dayTimeGreeting = greetMaker('Good day to you');
+const nightGreeting = greetMaker('Good Evening');
+console.log(dayTimeGreeting('Kayum'));
+console.log(nightGreeting('Hossain'));
+
+//Creating a Generator Function That Yields Multiple Values
+function* generateValues() {
+  yield 455345;
+  yield 'hello';
+  yield 5;
+  yield 'This is the end';
+}
+const generator = generateValues();
+console.log(generator.next().value);
+console.log(generator.next().value);
+console.log(generator.next().value);
+console.log(generator.next().value);
+
+
+
+//Fixing 'this' with Function Binding
+
+window.onload = function () {
+  window.name = 'window';
+  const newObject = {
+    name: 'Kayum',
+    sayGreeting: function () {
+      const self = this;  
+      alert('now this is ' + this.name);
+      nestedGreeting = function (greeting) {
+        alert(greeting + ' ' + self.name);  
+      };
+      nestedGreeting('Hello');
+    }
+  };
+  newObject.sayGreeting('hello');
+}
+    </script>
+</body>
+</html>
