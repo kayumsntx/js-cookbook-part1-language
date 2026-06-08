@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Chapter 7: Objects</h1>
+
+  <script>
+    //Checking if an Object Is a Certain Type (instanceof)
+    document.write('instanceof Date<br>');
+    const myDateobj = new Date(2026, 6, 3);
+    if (myDateobj instanceof Date) {
+      document.write(myDateobj);
+    } else {
+      alert('it\'s not a date');
+    }
+
+    document.write('<br><br>');
+
+    //instanceof String
+    document.write('instanceof String<br>');
+    const hellostr = new String("Hello World");
+    if (hellostr instanceof String) {
+      document.write(hellostr);
+    }
+    document.write('<br><br>');
+
+    //Using an Object Literal to Bundle Data
+    document.write('Object Literal Pattern<br>');
+    const student = {
+      studentId: 12,
+      firstName: 'Aziz',
+      lastName: 'Al Hasan',
+      birthDate: new Date(2000, 1, 10),
+    };
+    document.write(student.firstName + " " + student.lastName);
+
+    document.write('<br><br>');
+
+    const Employee = {
+      EmployeeID: 12,
+      firstName: 'Tanvir',
+      lastName: 'Mahmud',
+      birthDate: new Date(2000, 1, 10),
+      birthPlace: { country: 'Bangladesh', city: 'Cumilla' }
+    };
+    document.write('Birth Place : ' + Employee.birthPlace.city + ' , ' + Employee.birthPlace.country);
+    document.write('<br><br>');
+
+    // Checking If an Object Has a Property
+    document.write('Checking Object Property (in operator)<br>');
+    const address = {
+      country: 'Bangladesh',
+      city: 'Dhaka',
+      houseNo: '69 panthapath'
+    };
+    if ('country' in address) {
+      document.write(address.country);
+    } else {
+      document.write('Country not found');
+    }
+
+    document.write('<br>');
+
+    if ('zipcode' in address) {
+      document.write(address.country);
+    } else {
+      document.write('Zipcode not found');
+    }
+
+    document.write('<br><br>');
+
+    //hasOwnProperty() method
+    document.write('hasOwnProperty()<br>');
+    document.write(address.hasOwnProperty("country"));
+    document.write('<br>');
+    document.write(address.hasOwnProperty("zipcode"));
+    document.write('<br><br>');
+
+    //Iterating Over All Properties of an Object
+    document.write('Object.keys() iteration<br>');
+    const address1 = {
+      country: 'Bangladesh',
+      city: 'Dhaka',
+      houseNo: '69 panthapath'
+    };
+    const properties = Object.keys(address1);
+    for (const prop of properties) {
+      document.write(`property: ${prop}, Values : ${address1[prop]}<br>`);
+    }
+    document.write('<br>');
+
+    //Testing for an Empty Object
+    document.write('Testing Empty Object<br>');
+    const blankObj = {};
+    if (Object.keys(blankObj).length === 0) {
+      document.write('I\'m an Empty Object');
+    } else {
+      document.write(blankObj.name);
+    }
+    document.write('<br><br>');
+
+    //Merging Properties of Two Objects (Spread Operator)
+    document.write('Merging Objects<br>');
+    const address2 = {
+      country: 'Bangladesh',
+      city: 'Dhaka',
+      houseNo: '69 panthapath'
+    };
+    const customer = {
+      firstName: 'Ali',
+      lastName: 'Billah'
+    };
+    const customerWithAddress = { ...customer, ...address2 };
+    document.write(customerWithAddress.firstName + ' from ' + customerWithAddress.country);
+    document.write('<br><br>');
+
+    //Preventing Any Changes to an Object (Object.freeze)
+    document.write('Object.freeze()<br>');
+    const Person = {
+      firstName: 'Ali',
+      lastName: 'Billah'
+    };
+    Object.freeze(Person);
+    Person.firstName = 'Fahad'; 
+    document.write(Person.firstName);
+    document.write('<br><br>');
+
+    //Cloning an Object (Shallow Copy)
+    document.write('Cloning an Object (Shallow Copy)<br>');
+    const animalclone = {
+      name: 'Red Fox',
+      class: 'Mammalia',
+      order: 'Carnivora',
+      family: 'Canidea',
+      genus: 'Vulpes',
+      species: 'vulpes vulpes'
+    };
+    document.write(animalclone.species);
+    document.write('<br>');
+    const animalCopy = { ...animalclone };
+    document.write(animalCopy.species);
+    document.write('<br><br>');
+
+    //Making a Deep Copy of an Object
+    document.write('Deep Copy of Object<br>');
+    const student2 = {
+      firstName: 'Sourov',
+      lastName: 'Dogesh',
+      testScore: [78, 98, 52, 4, 87, 59]
+    };
+
+    function cloneStd(student) {
+      const studentCopy = { ...student };
+      studentCopy.testScore = [...studentCopy.testScore];
+      return studentCopy;
+    }
+
+    const studentCopy = cloneStd(student2);
+    studentCopy.testScore[0] = 36;
+    document.write('Copied array first value: ' + studentCopy.testScore[0]);
+    document.write('<br>');
+    document.write('Original array first value: ' + student2.testScore[0]);
+    document.write('<br><br>');
+
+    //Creating Enums with Symbol
+    document.write('Enum with Symbol<br>');
+    const trafficLight = {
+      Green: Symbol('green'),
+      Red: Symbol('red'),
+      Yellow: Symbol('yellow')
+    };
+
+    function switchLight(newLight) {
+      if (newLight === trafficLight.Green) {
+        document.write('Turning Light green<br>');
+      } else if (newLight === trafficLight.Yellow) {
+        document.write('Get Ready to Stop<br>');
+      } else {
+        document.write('Turning Light red<br>');
+      }
+      return newLight;
+    }
+
+    let light = trafficLight.Green;
+    light = switchLight(trafficLight.Yellow);
+    document.write('Returned: ' + String(light));
+  </script>
+</body>
+</html>
