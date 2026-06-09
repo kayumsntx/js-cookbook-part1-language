@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 8 - Classes (Complete)</title>
+</head>
+<body>
+  <h1>Chapter 8: Classes</h1>
+
+  <script>
+    
+    document.write('<h3>Reusable Class</h3>');
+    
+    class Person {
+      constructor(firstName, lastName, dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+      }
+      
+     
+      get age() {
+        if (this.dateOfBirth instanceof Date) {
+          const today = new Date();
+          let age = today.getFullYear() - this.dateOfBirth.getFullYear();
+          const monthDiff = today.getMonth() - this.dateOfBirth.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < this.dateOfBirth.getDate())) {
+            age -= 1;
+          }
+          return age;
+        }
+        return "Date of birth not set";
+      }
+      
+     
+      swapNames() {
+        [this.firstName, this.lastName] = [this.lastName, this.firstName];
+        return this;
+      }
+      
+      
+      toString() {
+        return `${this.lastName}, ${this.firstName}`;
+      }
+    }
+    
+    const person1 = new Person('Kayum', 'Hossain');
+    document.write('Person: ' + person1.firstName + ' ' + person1.lastName + '<br>');
+    
+    const person2 = new Person('Luke', 'Takei', new Date(1990, 5, 22));
+    document.write('Age: ' + person2.age + '<br>');
+    document.write('toString(): ' + person2.toString() + '<br><br>');
+    
+
+    document.write('<h3>Private Fields (# syntax)</h3>');
+    
+    class Student {
+      #firstName;
+      #lastName;
+      
+      constructor(firstName, lastName) {
+        this.#firstName = firstName;
+        this.#lastName = lastName;
+      }
+      
+      get firstName() {
+        return this.#firstName;
+      }
+      set firstName(name) {
+        this.#firstName = name;
+      }
+      get lastName() {
+        return this.#lastName;
+      }
+      set lastName(name) {
+        this.#lastName = name;
+      }
+    }
+    
+    const student1 = new Student('Nishat', 'Sharmeen');
+    document.write('Student: ' + student1.firstName + ' ' + student1.lastName + '<br><br>');
+    
+
+   
+    document.write('<h3>Constructor Pattern</h3>');
+    
+    function PersonOld(firstName, lastName) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      
+      this.swapNames = function() {
+        [this.firstName, this.lastName] = [this.lastName, this.firstName];
+      }
+    }
+    
+    const personOld = new PersonOld('Kayum', 'Hossain');
+    personOld.swapNames();
+    document.write('After swapNames(): ' + personOld.firstName + ' ' + personOld.lastName + '<br><br>');
+    
+
+   
+    document.write('<h3>Method Chaining</h3>');
+    
+    class Book {
+      constructor(title, author, price, publishDate) {
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.publishDate = publishDate;
+      }
+      
+      raisePrice(percent) {
+        const increase = this.price * percent;
+        this.price += Math.round(increase) / 100;
+        return this;
+      }
+      
+      releaseNewEdition() {
+        this.publishDate = new Date();
+        return this;
+      }
+    }
+    
+    const book = new Book('JavaScript CookBook', 'Adam D. Scott', 500, new Date(2021, 2, 19));
+    const updatedBook = book.raisePrice(15).releaseNewEdition();
+    document.write('Book: ' + updatedBook.title + ', Price: ' + updatedBook.price + ', Published: ' + updatedBook.publishDate + '<br><br>');
+    
+
+  
+    document.write('<h3>Static Methods</h3>');
+    
+    class BookWithIsbn {
+      constructor(title, author, isbn, publishDate) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.publishDate = publishDate;
+      }
+      
+      static isEqual(book, otherBook) {
+        if (book instanceof BookWithIsbn && otherBook instanceof BookWithIsbn) {
+          return (book.isbn.replaceAll('-', '') === otherBook.isbn.replaceAll('-', ''));
+        }
+        return false;
+      }
+    }
+    
+    const book1 = new BookWithIsbn('Book One', 'Author A', '978-3-16-148410-0', new Date());
+    const book2 = new BookWithIsbn('Book Two', 'Author B', '9783161484100', new Date());
+    document.write('Books are equal (by ISBN): ' + BookWithIsbn.isEqual(book1, book2) + '<br><br>');
+    
+
+    
+    document.write('<h3>Static Method to Create Objects (Factory Method)</h3>');
+    
+    class Author {
+      constructor(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+      }
+    }
+    
+    class BookWithAuthor {
+      constructor(title, author) {
+        this.title = title;
+        this.author = author;
+      }
+      
+      static createSequel(prevBook, title) {
+        return new BookWithAuthor(title, prevBook.author);
+      }
+      
+      static createTrilogy(author, title1, title2, title3) {
+        return [
+          new BookWithAuthor(title1, author),
+          new BookWithAuthor(title2, author),
+          new BookWithAuthor(title3, author)
+        ];
+      }
+    }
+    
+    const author = new Author('Koh', 'Der');
+    const trilogy = BookWithAuthor.createTrilogy(author, 'A Sea of Fire', 'A Sea of Ice', 'A Sea of Water');
+    document.write('Trilogy created: ' + trilogy[0].title + ', ' + trilogy[1].title + ', ' + trilogy[2].title + '<br><br>');
+    
+
+   
+    document.write('<h3>Inheritance (extends)</h3>');
+    
+    class Shape {
+      getArea() {
+        return null;
+      }
+    }
+    
+    class Triangle extends Shape {
+      constructor(base, height) {
+        super();
+        this.base = base;
+        this.height = height;
+      }
+      getArea() {
+        return (this.base * this.height) / 2;
+      }
+    }
+    
+    class Circle extends Shape {
+      constructor(radius) {
+        super();
+        this.radius = radius;
+      }
+      getArea() {
+        return Math.PI * this.radius ** 2;
+      }
+    }
+    
+    class Square extends Shape {
+      constructor(length) {
+        super();
+        this.length = length;
+      }
+      getArea() {
+        return this.length ** 2;
+      }
+    }
+    
+    const triangle = new Triangle(15, 8);
+    const circle = new Circle(8);
+    const square = new Square(7);
+    
+    document.write('Triangle Area: ' + triangle.getArea() + '<br>');
+    document.write('Circle Area: ' + circle.getArea() + '<br>');
+    document.write('Square Area: ' + square.getArea() + '<br>');
+    
+
+    document.write('triangle instanceof Shape: ' + (triangle instanceof Shape) + '<br><br>');
+    
+
+   
+    document.write('<h3>Extra: Prototype Chains (Constructor Pattern)</h3>');
+    
+    function PersonProto(firstName, lastName) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+    }
+    
+    PersonProto.prototype.greet = function() {
+      return 'Hello ' + this.firstName + ' ' + this.lastName;
+    };
+    
+    function EmployeeProto(firstName, lastName, department) {
+      PersonProto.call(this, firstName, lastName);
+      this.department = department;
+    }
+    
+    EmployeeProto.prototype = Object.create(PersonProto.prototype);
+    EmployeeProto.prototype.constructor = EmployeeProto;
+    
+    EmployeeProto.prototype.introduceJob = function() {
+      return 'I work in ' + this.department;
+    };
+    
+    const employee = new EmployeeProto('Kayum', 'Hossain', 'IT');
+    document.write(employee.greet() + '<br>');
+    document.write(employee.introduceJob() + '<br><br>');
+    
+
+  
+    document.write('<h3>Modules (ES6 Modules - need .mjs file and web server)</h3>');
+    document.write('Module code is in separate files. See lengthConverterModule.js and module-test.html<br><br>');
+    
+  </script>
+</body>
+</html>
