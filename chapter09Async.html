@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 9 - Asynchronous Programming</title>
+</head>
+<body>
+  <h1>Chapter 9: Asynchronous Programming</h1>
+
+  <div id="status"></div>
+  <img id="imgDownload" style="max-width: 300px; margin-top: 20px;">
+
+  <script>
+   
+    document.write('<h3>Updating Page During Loop (setTimeout)</h3>');
+    
+    function doWorkInChunks() {
+      const statusElement = document.getElementById("status");
+      const startTime = Date.now();
+      let counter = 0;
+      statusElement.innerText = 'Processing started';
+      
+      const doChunkTask = () => {
+        if (Date.now() - startTime < 10000) {
+          counter += 1;
+          statusElement.innerText = `Just generated number ${counter}`;
+          setTimeout(doChunkTask, 0);
+        } else {
+          statusElement.innerText = 'Processing completed';
+        }
+      };
+      doChunkTask();
+    }
+    doWorkInChunks();
+    document.write('<br><br>');
+
+
+
+    document.write('<h3>Function That Returns a Promise (fetch)</h3>');
+    
+    const promise = fetch('https://upload.wikimedia.org/wikipedia/commons/b/b2/Eagle_nebula_pillars.jpg');
+    promise.then(function onSuccess(response) {
+      console.log(`HTTP status: ${response.status}`);
+    });
+    promise.catch(function onError(error) {
+      console.log(`Error: ${error}`);
+    });
+    promise.finally(function () {
+      console.log('All Done - Basic Promise');
+    });
+
+
+    fetch('https://upload.wikimedia.org/wikipedia/commons/b/b2/Eagle_nebula_pillars.jpg')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        } else {
+          return response.blob();
+        }
+      })
+      .then(blob => {
+        const img = document.getElementById('imgDownload');
+        img.src = URL.createObjectURL(blob);
+        console.log('Image loaded successfully');
+      })
+      .catch(error => {
+        console.log(`Error: ${error}`);
+      });
+    
+    document.write('<br><br>');
+
+
+  
+    document.write('<h3>Callback Version - Factorial</h3>');
+    
+    function factorialNumberCallback(number, successCallback, failureCallback) {
+      if (number < 0) {
+        failureCallback(new Error('Factorials are only defined for positive numbers'));
+      } else if (number !== Math.trunc(number)) {
+        failureCallback(new Error('Factorials are defined for integers'));
+      } else {
+        setTimeout(() => {
+          if (number === 0 || number === 1) {
+            successCallback(1);
+          } else {
+            let result = number;
+            while (number > 1) {
+              number -= 1;
+              result *= number;
+            }
+            successCallback(result);
+          }
+        }, 1000); 
+      }
+    }
+
+    function logResultCallback(result) {
+      console.log(`Callback Result: 5! = ${result}`);
+      document.write(`Callback Result: 5! = ${result}<br>`);
+    }
+    function logErrorCallback(error) {
+      console.log(`Callback Error: ${error.message}`);
+    }
+    
+    factorialNumberCallback(5, logResultCallback, logErrorCallback);
+    document.write('<br>');
+
+
+ 
+    document.write('<h3>Promisifying - Factorial with Promise</h3>');
+    
+    function factorialNumberPromise(number) {
+      return new Promise((resolve, reject) => {
+        factorialNumberCallback(number, result => {
+          resolve(result);
+        }, error => {
+          reject(error);
+        });
+      });
+    }
+
+    factorialNumberPromise(5)
+      .then(result => {
+        console.log(`Promise Result: 5! = ${result}`);
+        document.write(`Promise Result: 5! = ${result}<br>`);
+      })
+      .catch(error => {
+        console.log(`Promise Error: ${error.message}`);
+      });
+    document.write('<br>');
+
+
+
+    document.write('<h3>Multiple Promises Concurrently (Promise.all)</h3>');
+    
+    function randomWaitPromise() {
+      return new Promise((resolve, reject) => {
+        const waitMilliseconds = Math.round(Math.random() * 5000);
+        setTimeout(() => {
+          console.log(`Resolved after ${waitMilliseconds}ms`);
+          resolve(waitMilliseconds);
+        }, waitMilliseconds);
+      });
+    }
+
+    const promise1 = randomWaitPromise();
+    const promise2 = randomWaitPromise();
+    const promise3 = randomWaitPromise();
+    const promises = [promise1, promise2, promise3];
+    
+    Promise.all(promises).then(values => {
+      console.log(`All done with: ${values}`);
+      document.write(`All promises resolved with wait times: ${values}<br>`);
+    });
+    document.write('<br>');
+
+
+
+    document.write('<h3>Await and Async</h3>');
+    
+    async function getImage() {
+      const url = 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Eagle_nebula_pillars.jpg';
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const blob = await response.blob();
+          const img = document.getElementById("imgDownload");
+          img.src = URL.createObjectURL(blob);
+          console.log('Async/Await: Image loaded');
+          document.write('Async/Await: Image loaded successfully<br>');
+        }
+      } catch (error) {
+        console.log(`Async/Await Error: ${error}`);
+      }
+    }
+    getImage();
+    document.write('<br>');
+
+
+
+    document.write('<h3>Asynchronous Generator Function</h3>');
+    
+    function* getRandomIntegers(max) {
+      while (true) {
+        yield Math.floor(Math.random() * Math.floor(max) + 1);
+      }
+    }
+    
+    const randomGenerator = getRandomIntegers(6);
+    document.write('10 random numbers (1-6): ');
+    for (let i = 0; i < 10; i++) {
+      const value = randomGenerator.next().value;
+      document.write(value + ' ');
+      console.log(`Random ${i+1}: ${value}`);
+    }
+    document.write('<br><br>');
+
+
+
+    document.write('<h3>Async Generator Function with await</h3>');
+    
+    async function* getRandomIntegersAsync(max) {
+      while (true) {
+        yield new Promise(resolve => {
+          setTimeout(() => {
+            resolve(Math.floor(Math.random() * Math.floor(max) + 1));
+          }, 100);
+        });
+      }
+    }
+
+    async function testAsyncGenerator() {
+      const generator = getRandomIntegersAsync(6);
+      document.write('Async generator (5 values): ');
+      for (let i = 0; i < 5; i++) {
+        const value = await generator.next();
+        document.write(value.value + ' ');
+      }
+      document.write('<br>');
+    }
+    testAsyncGenerator();
+
+  </script>
+</body>
+</html>
