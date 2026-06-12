@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 10 - Errors and Testing (Complete)</title>
+</head>
+<body>
+  <h1>Chapter 10: Errors and Testing</h1>
+
+  <script>
+   
+    document.write('<h3>Catching and Neutralizing an Error (try...catch...finally)</h3>');
+    
+    try {
+      const uri = decodeURI('http%test');
+      console.log('Success! (This line will not execute)');
+      document.write('Success! (This will not appear)<br>');
+    } catch (error) {
+      console.log('Caught Error:', error);
+      document.write(`Caught Error: ${error}<br>`);
+    } finally {
+      console.log('Finally block - cleanup code runs always');
+      document.write('Finally block executed<br>');
+    }
+    document.write('<br>');
+
+
+    
+    document.write('<h3>Catching Different Types of Errors (instanceof)</h3>');
+    
+    function testErrorTypes(value) {
+      try {
+        if (typeof value !== 'number') {
+          throw new TypeError('Value must be a number');
+        }
+        if (value < 0) {
+          throw new RangeError('Value must be positive');
+        }
+        if (value > 100) {
+          throw new RangeError('Value must be less than 100');
+        }
+        console.log(`Valid number: ${value}`);
+        document.write(`Valid number: ${value}<br>`);
+      } catch (error) {
+        if (error instanceof TypeError) {
+          console.log(`TypeError caught: ${error.message}`);
+          document.write(`TypeError: ${error.message}<br>`);
+        } else if (error instanceof RangeError) {
+          console.log(`RangeError caught: ${error.message}`);
+          document.write(`RangeError: ${error.message}<br>`);
+        } else {
+          console.log(`Unknown error: ${error.message}`);
+          document.write(`Unknown error: ${error.message}<br>`);
+          throw error; // rethrow unknown errors
+        }
+      }
+    }
+    
+    testErrorTypes('not a number');  // TypeError
+    testErrorTypes(-5);               // RangeError
+    testErrorTypes(42);               // Valid
+    testErrorTypes(150);              // RangeError
+    document.write('<br>');
+
+
+ 
+    document.write('<h3>Catching Asynchronous Errors (Promise.catch)</h3>');
+    
+    // Promise-based error handling
+    fetch('https://httpbin.org/status/404')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Data received:', data);
+      })
+      .catch(error => {
+        console.log('Asynchronous error caught:', error.message);
+        document.write(`Async error: ${error.message}<br>`);
+      });
+    
+    document.write('Async error handling demo triggered (check console)<br><br>');
+
+
+  
+    document.write('<h3>Detecting Unhandled Errors (window.onerror)</h3>');
+    
+    // Note: window.onerror works best in a full page context
+    // This is a demonstration of the syntax
+    window.onerror = function(message, url, lineNo, columnNo, error) {
+      console.log(`Unhandled error: ${message} at ${url}:${lineNo}`);
+      document.write(`Unhandled error detected: ${message}<br>`);
+      return true; // Prevents default error handling
+    };
+    
+    // Uncomment to test (will trigger the error handler):
+    // console.log(null.length);
+    
+    document.write('window.onerror handler registered (check console for details)<br><br>');
+
+
+   
+    document.write('<h3>hrowing a Standard Error</h3>');
+    
+    function strictDivision(number, divisor) {
+      if (divisor == 0) {
+        throw new Error('Dividing by zero is not allowed');
+      } else {
+        return number / divisor;
+      }
+    }
+    
+    // Catch the error
+    try {
+      const result = strictDivision(42, 0);
+      document.write(`Result: ${result}<br>`);
+    } catch (error) {
+      console.log(`Error: ${error.message}`);
+      document.write(`Caught Error: ${error.message}<br>`);
+    }
+    
+    // Example with valid division
+    try {
+      const result = strictDivision(42, 6);
+      document.write(`Valid division (42/6): ${result}<br>`);
+    } catch (error) {
+      document.write(`Error: ${error.message}<br>`);
+    }
+    
+    // Example with RangeError
+    function setAge(age) {
+      const upper = 125;
+      const lower = 18;
+      if (age > upper || age < lower) {
+        throw new RangeError(`Age [${age}] is out of acceptable range ${lower}-${upper}`);
+      }
+      return age;
+    }
+    
+    try {
+      setAge(150);
+    } catch (error) {
+      if (error instanceof RangeError) {
+        document.write(`RangeError: ${error.message}<br>`);
+      }
+    }
+    
+    // Example with TypeError
+    function calculateValue(num) {
+      if (typeof num !== 'number') {
+        throw new TypeError(`Value [${num}] is not a number`);
+      }
+      return num * 2;
+    }
+    
+    try {
+      calculateValue('hello');
+    } catch (error) {
+      if (error instanceof TypeError) {
+        document.write(`TypeError: ${error.message}<br>`);
+      }
+    }
+    document.write('<br>');
+
+
+ 
+    document.write('<h3>Throwing a Custom Error</h3>');
+    
+    class CustomError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = 'CustomError';
+        if (Error.captureStackTrace) {
+          Error.captureStackTrace(this, CustomError);
+        }
+      }
+    }
+    
+    class ProductNotFound extends Error {
+      constructor(missingProductID) {
+        super(`Product ${missingProductID} does not exist in the catalog`);
+        this.name = 'ProductNotFound';
+        this.productID = missingProductID;
+        if (Error.captureStackTrace) {
+          Error.captureStackTrace(this, ProductNotFound);
+        }
+      }
+    }
+    
+    try {
+      throw new ProductNotFound(420);
+    } catch (error) {
+      console.log(`Error: ${error.message}`);
+      if (error instanceof ProductNotFound) {
+        document.write(`Custom Error - Product ID ${error.productID} not found<br>`);
+      }
+    }
+    
+    try {
+      throw new CustomError('An application-specific problem occurred');
+    } catch (error) {
+      document.write(`CustomError: ${error.message}<br>`);
+    }
+    document.write('<br>');
+
+
+
+    document.write('<h3>Unit Tests with Jest (Syntax Demonstration)</h3>');
+    document.write('Jest tests are typically written in separate .test.js files.<br>');
+    document.write('Example test syntax:<br>');
+    document.write('<pre>');
+    document.write(`test('10! is 3628800', () => {
+  expect(factorialize(10)).toBe(3628800);
+});`);
+    document.write('</pre>');
+    document.write('Run with: npx jest factorialize.test.js<br><br>');
+
+
+
+    document.write('<h3>Test Code Coverage with Jest</h3>');
+    document.write('To check code coverage, run:<br>');
+    document.write('<pre>npx jest --collect-coverage</pre>');
+    document.write('This generates a report showing:<br>');
+    document.write('- Statements coverage<br>');
+    document.write('- Branches coverage<br>');
+    document.write('- Functions coverage<br>');
+    document.write('- Lines coverage<br>');
+    document.write('An HTML report is saved in the <strong>coverage/</strong> folder.<br>');
+
+  </script>
+</body>
+</html>
